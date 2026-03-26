@@ -1,0 +1,185 @@
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.userInfo h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.email {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.stat {
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.statValue {
+  font-size: clamp(0.75rem, 2.5vw, var(--font-size-2xl));
+  font-weight: 800;
+  color: var(--accent-text);
+  word-break: break-all;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topUp {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.topUpInput {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  width: 160px;
+  outline: none;
+}
+
+.topUpInput:focus {
+  border-color: var(--accent-end);
+}
+
+.topUpBtn {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-sm);
+  background: var(--accent-gradient);
+  color: white;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: opacity var(--transition-fast);
+}
+
+.topUpBtn:hover {
+  opacity: 0.9;
+}
+
+.logoutBtn {
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.logoutBtn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Purchase history */
+.historySection {
+  margin-top: var(--space-xl);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.historyItem {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.historyDate {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.historyToken {
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.historyGames {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.historyTotal {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.emptyHistory {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--text-muted);
+}

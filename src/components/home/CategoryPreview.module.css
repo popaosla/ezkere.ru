@@ -1,0 +1,38 @@
+.section {
+  margin-bottom: var(--space-2xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.seeAll {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--accent-text);
+  transition: opacity var(--transition-fast);
+}
+
+.seeAll:hover {
+  opacity: 0.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+@media (min-width: 1920px) {
+  .grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
