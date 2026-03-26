@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { games } from '../data/games'
+import { useGames } from '../contexts/GamesContext'
 import { filterGames } from '../utils/filterGames'
 import CatalogFilters from '../components/catalog/CatalogFilters'
 import CatalogGrid from '../components/catalog/CatalogGrid'
@@ -30,6 +30,7 @@ const countStyle = {
 }
 
 export default function CatalogPage() {
+  const { games } = useGames()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [filters, setFilters] = useState({

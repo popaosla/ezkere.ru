@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-
 import { ThemeProvider } from './contexts/ThemeContext'
 import { AuthProvider } from './contexts/AuthContext'
 import { CartProvider } from './contexts/CartContext'
+import { GamesProvider } from './contexts/GamesContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -48,6 +49,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
+        <GamesProvider>
         <AuthProvider>
           <CartProvider>
             <Routes>
@@ -67,6 +69,7 @@ export default function App() {
             </Routes>
           </CartProvider>
         </AuthProvider>
+        </GamesProvider>
       </ThemeProvider>
     </BrowserRouter>
   )

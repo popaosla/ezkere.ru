@@ -1,8 +1,9 @@
 import { useParams, Navigate } from 'react-router-dom'
-import { games } from '../data/games'
+import { useGames } from '../contexts/GamesContext'
 import GameDetails from '../components/game/GameDetails'
 
 export default function GamePage() {
+  const { games } = useGames()
   const { slug } = useParams()
   const game = games.find(g => g.slug === slug)
 

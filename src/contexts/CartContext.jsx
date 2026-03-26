@@ -1,13 +1,14 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import pb from '../lib/pb'
 import { useAuth } from './AuthContext'
-import { games } from '../data/games'
+import { useGames } from './GamesContext'
 import { calcDiscount } from '../utils/formatPrice'
 
 const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const { user } = useAuth()
+  const { games } = useGames()
   const [cartItems, setCartItems] = useState([])
 
   // Загружаем корзину при смене пользователя (логин/логаут)
@@ -56,7 +57,7 @@ export function CartProvider({ children }) {
       const game = games.find(g => g.id === item.gameId)
       return game ? { ...game, addedAt: item.addedAt } : null
     }).filter(Boolean)
-  }, [cartItems])
+  }, [cartItems, games])
 
   const cartTotal = useMemo(() => {
     return cartGames.reduce((sum, game) => sum + calcDiscount(game.price, game.discountPercent), 0)

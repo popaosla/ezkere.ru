@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { games } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import { formatPrice, calcDiscount } from '../../utils/formatPrice'
 import s from './SearchBar.module.css'
 
 export default function SearchBar({ autoFocus, onClose }) {
+  const { games } = useGames()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [isOpen, setIsOpen] = useState(false)

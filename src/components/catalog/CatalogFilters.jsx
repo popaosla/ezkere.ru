@@ -1,7 +1,8 @@
-import { genres, platforms } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import s from './CatalogFilters.module.css'
 
 export default function CatalogFilters({ filters, onChange }) {
+  const { genres, platforms } = useGames()
   const toggleGenre = (genre) => {
     onChange({ ...filters, genre: filters.genre === genre ? '' : genre })
   }

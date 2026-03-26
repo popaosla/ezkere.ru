@@ -1,9 +1,10 @@
 import { useRef } from 'react'
-import { games } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import GameCard from '../common/GameCard'
 import s from './TrendingCarousel.module.css'
 
 export default function TrendingCarousel() {
+  const { games } = useGames()
   const trackRef = useRef(null)
   const trending = games.filter(g => g.isTrending)
 

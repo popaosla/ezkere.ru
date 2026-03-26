@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { games } from '../data/games'
+import { useGames } from '../contexts/GamesContext'
 import { filterGames } from '../utils/filterGames'
 import CatalogGrid from '../components/catalog/CatalogGrid'
 
@@ -11,12 +11,13 @@ const pageStyle = {
 }
 
 export default function SearchResultsPage() {
+  const { games } = useGames()
   const [searchParams] = useSearchParams()
   const query = searchParams.get('q') || ''
 
   const results = useMemo(() =>
     query ? filterGames(games, { search: query }) : [],
-    [query]
+    [query, games]
   )
 
   return (

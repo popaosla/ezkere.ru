@@ -1,9 +1,10 @@
 import { NavLink, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { genres } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import s from './Sidebar.module.css'
 
 export default function Sidebar({ isOpen, onClose }) {
+  const { genres } = useGames()
   const { user, logout } = useAuth()
 
   const handleClick = () => onClose()

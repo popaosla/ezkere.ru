@@ -44,14 +44,14 @@ export default function Footer() {
             <h4>Информация</h4>
             <Link to="/profile">Личный кабинет</Link>
             <Link to="/cart">Корзина</Link>
-            <a href="https://t.me/ezkere_manager" target="_blank" rel="noopener noreferrer">Поддержка</a>
+            <a href="https://t.me/sjkzd" target="_blank" rel="noopener noreferrer">Поддержка</a>
           </div>
         </div>
 
         <div className={s.divider} />
 
         <div className={s.bottom}>
-          <span>&copy; 2024-2026 EZKERE. Все права защищены.</span>
+          <span>&copy; 2026 EZKERE. Все права защищены.</span>
           <p className={s.paymentInfo}>
             Данный сайт не является публичной офертой. Все торговые марки принадлежат их правообладателям.
           </p>

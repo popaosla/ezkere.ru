@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import { games } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import { formatPrice, calcDiscount } from '../../utils/formatPrice'
 import s from './HeroBanner.module.css'
 
 export default function HeroBanner() {
+  const { games } = useGames()
   const featured = games.find(g => g.isFeatured) || games[0]
   const price = calcDiscount(featured.price, featured.discountPercent)
 

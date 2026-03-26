@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import { games } from '../../data/games'
+import { useGames } from '../../contexts/GamesContext'
 import GameCard from '../common/GameCard'
 import s from './CategoryPreview.module.css'
 
 export default function CategoryPreview({ genre, count = 4 }) {
+  const { games } = useGames()
   const filtered = games
     .filter(g => g.genres.some(gen => gen === genre))
     .sort((a, b) => b.metacriticScore - a.metacriticScore)
