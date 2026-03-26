@@ -21,7 +21,7 @@ export default function ProfileInfo() {
     <>
       <div className={s.card}>
         <div className={s.header}>
-          <div className={s.avatar}>{user.username[0].toUpperCase()}</div>
+          <div className={s.avatar}>{(user.username || '?')[0].toUpperCase()}</div>
           <div className={s.userInfo}>
             <h2>{user.username}</h2>
             <span className={s.email}>{user.email}</span>

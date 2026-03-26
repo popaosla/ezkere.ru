@@ -8,11 +8,11 @@ function normalize(record) {
   if (!record) return null
   return {
     id: record.id,
-    username: record.username,
-    email: record.email,
-    balance: record.balance ?? 0,
-    purchaseHistory: record.purchaseHistory ?? [],
-    cart: record.cart ?? [],
+    username: record.username || record.name || record.email?.split('@')[0] || 'User',
+    email: record.email || '',
+    balance: typeof record.balance === 'number' ? record.balance : 0,
+    purchaseHistory: Array.isArray(record.purchaseHistory) ? record.purchaseHistory : [],
+    cart: Array.isArray(record.cart) ? record.cart : [],
     createdAt: record.created ?? new Date().toISOString()
   }
 }
