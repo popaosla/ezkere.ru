@@ -8,7 +8,7 @@ function normalize(record) {
   if (!record) return null
   return {
     id: record.id,
-    username: record.username || record.name || record.email?.split('@')[0] || 'User',
+    username: record.name || record.username || record.email?.split('@')[0] || 'User',
     email: record.email || '',
     balance: typeof record.balance === 'number' ? record.balance : 0,
     purchaseHistory: Array.isArray(record.purchaseHistory) ? record.purchaseHistory : [],
@@ -44,7 +44,7 @@ export function AuthProvider({ children }) {
   const register = async (username, email, password) => {
     try {
       await pb.collection('users').create({
-        username,
+        name: username,
         email,
         password,
         passwordConfirm: password,
