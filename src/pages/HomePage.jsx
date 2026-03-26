@@ -1,8 +1,13 @@
+import { useGames } from '../contexts/GamesContext'
 import HeroBanner from '../components/home/HeroBanner'
 import TrendingCarousel from '../components/home/TrendingCarousel'
 import CategoryPreview from '../components/home/CategoryPreview'
 
 export default function HomePage() {
+  const { loading } = useGames()
+
+  if (loading) return <div className="page-loading">Загрузка...</div>
+
   return (
     <div className="page">
       <div className="container">

@@ -40,6 +40,16 @@ body {
   padding-bottom: var(--space-3xl);
 }
 
+/* Loading state */
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: var(--text-secondary);
+  font-size: var(--font-size-lg);
+}
+
 /* Selection */
 ::selection {
   background: var(--accent-start);
