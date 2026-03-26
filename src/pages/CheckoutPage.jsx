@@ -32,34 +32,42 @@ export default function CheckoutPage() {
   if (!user) return <Navigate to="/login" replace />
   if (cartGames.length === 0) return <Navigate to="/cart" replace />
 
-  const handlePay = () => {
+  const [loading, setLoading] = useState(false)
+
+  const handlePay = async () => {
     setError('')
     if (payMethod === 'balance' && user.balance < cartTotal) {
       setError('Недостаточно средств на балансе. Пополните баланс в профиле.')
       return
     }
 
-    const token = generateToken(10)
-    const orderId = 'ord_' + Date.now().toString(36)
+    setLoading(true)
+    try {
+      const token = generateToken(10)
+      const orderId = 'ord_' + Date.now().toString(36)
 
-    const purchase = {
-      orderId,
-      date: new Date().toISOString(),
-      items: cartGames.map(g => ({
-        gameId: g.id,
-        title: g.title,
-        price: calcDiscount(g.price, g.discountPercent)
-      })),
-      total: cartTotal,
-      token,
-      status: 'completed'
+      const purchase = {
+        orderId,
+        date: new Date().toISOString(),
+        items: cartGames.map(g => ({
+          gameId: g.id,
+          title: g.title,
+          price: calcDiscount(g.price, g.discountPercent)
+        })),
+        total: cartTotal,
+        token,
+        status: 'completed'
+      }
+
+      await addPurchase(purchase)
+      await clearCart()
+      try { localStorage.setItem('ezkere_last_order', JSON.stringify(purchase)) } catch {}
+      navigate(`/order/${orderId}?token=${token}`)
+    } catch (err) {
+      setError('Ошибка оплаты: ' + (err.message || 'попробуйте ещё раз'))
+    } finally {
+      setLoading(false)
     }
-
-    addPurchase(purchase)
-    clearCart()
-    // Save last order for the confirmation page
-    try { localStorage.setItem('ezkere_last_order', JSON.stringify(purchase)) } catch {}
-    navigate(`/order/${orderId}?token=${token}`)
   }
 
   return (
@@ -114,8 +122,8 @@ export default function CheckoutPage() {
         </p>
       </div>
 
-      <button style={styles.payBtn} onClick={handlePay}>
-        Оплатить {formatPrice(cartTotal)}
+      <button style={{...styles.payBtn, opacity: loading ? 0.6 : 1}} onClick={handlePay} disabled={loading}>
+        {loading ? 'Обработка...' : `Оплатить ${formatPrice(cartTotal)}`}
       </button>
       {error && <p style={styles.error}>{error}</p>}
     </div>

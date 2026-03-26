@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { formatPrice } from '../../utils/formatPrice'
 import s from './ProfileInfo.module.css'
 
 export default function ProfileInfo() {
   const { user, updateBalance, logout } = useAuth()
+  const navigate = useNavigate()
   const [topUpAmount, setTopUpAmount] = useState('')
 
   if (!user) return null
@@ -66,7 +68,13 @@ export default function ProfileInfo() {
         ) : (
           <div className={s.historyList}>
             {user.purchaseHistory.map((purchase, idx) => (
-              <div key={idx} className={s.historyItem}>
+              <div
+                key={idx}
+                className={s.historyItem}
+                onClick={() => navigate(`/order/${purchase.orderId}?token=${purchase.token}`)}
+                style={{ cursor: 'pointer' }}
+                title="Нажмите для просмотра деталей заказа"
+              >
                 <div className={s.historyHeader}>
                   <span className={s.historyDate}>
                     {new Date(purchase.date).toLocaleString('ru-RU')}

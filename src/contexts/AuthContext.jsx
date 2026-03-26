@@ -79,16 +79,27 @@ export function AuthProvider({ children }) {
 
   const addPurchase = async (purchase) => {
     if (!user) return
+    const newBalance = user.balance - purchase.total
     const newHistory = [purchase, ...user.purchaseHistory]
-    const updated = await pb.collection('users').update(user.id, {
-      balance: user.balance - purchase.total,
-      purchaseHistory: newHistory
-    })
-    setUser(prev => ({
-      ...prev,
-      balance: updated.balance ?? prev.balance - purchase.total,
-      purchaseHistory: updated.purchaseHistory ?? newHistory
-    }))
+    try {
+      const updated = await pb.collection('users').update(user.id, {
+        balance: newBalance,
+        purchaseHistory: newHistory
+      })
+      setUser(prev => ({
+        ...prev,
+        balance: typeof updated.balance === 'number' ? updated.balance : newBalance,
+        purchaseHistory: Array.isArray(updated.purchaseHistory) ? updated.purchaseHistory : newHistory
+      }))
+    } catch (err) {
+      // Если PocketBase не обновился — обновляем локально, чтобы UI не застрял
+      setUser(prev => ({
+        ...prev,
+        balance: newBalance,
+        purchaseHistory: newHistory
+      }))
+      throw err
+    }
   }
 
   return (
