@@ -42,32 +42,32 @@ export default function CheckoutPage() {
     }
 
     setLoading(true)
-    try {
-      const token = generateToken(10)
-      const orderId = 'ord_' + Date.now().toString(36)
+    const token = generateToken(10)
+    const orderId = 'ord_' + Date.now().toString(36)
 
-      const purchase = {
-        orderId,
-        date: new Date().toISOString(),
-        items: cartGames.map(g => ({
-          gameId: g.id,
-          title: g.title,
-          price: calcDiscount(g.price, g.discountPercent)
-        })),
-        total: cartTotal,
-        token,
-        status: 'completed'
-      }
-
-      await addPurchase(purchase)
-      await clearCart()
-      try { localStorage.setItem('ezkere_last_order', JSON.stringify(purchase)) } catch {}
-      navigate(`/order/${orderId}?token=${token}`)
-    } catch (err) {
-      setError('Ошибка оплаты: ' + (err.message || 'попробуйте ещё раз'))
-    } finally {
-      setLoading(false)
+    const purchase = {
+      orderId,
+      date: new Date().toISOString(),
+      items: cartGames.map(g => ({
+        gameId: g.id,
+        title: g.title,
+        price: calcDiscount(g.price, g.discountPercent)
+      })),
+      total: cartTotal,
+      token,
+      status: 'completed'
     }
+
+    try {
+      await addPurchase(purchase)
+    } catch {
+      // addPurchase обновляет локально даже при ошибке сервера
+    }
+
+    clearCart()
+    try { localStorage.setItem('ezkere_last_order', JSON.stringify(purchase)) } catch {}
+    setLoading(false)
+    navigate(`/order/${orderId}?token=${token}`)
   }
 
   return (

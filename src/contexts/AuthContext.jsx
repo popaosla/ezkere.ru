@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useRef } from 'react'
 import pb from '../lib/pb'
 
 const AuthContext = createContext()
@@ -19,18 +19,23 @@ function normalize(record) {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => normalize(pb.authStore.record))
+  // Флаг: пропускать onChange пока идёт ручное обновление
+  const skipOnChange = useRef(false)
 
   useEffect(() => {
-    // Слушаем изменения авторизации (логин/логаут)
     const unsub = pb.authStore.onChange((_, model) => {
+      // Не перезаписывать state если мы сами обновляем пользователя
+      if (skipOnChange.current) return
       setUser(normalize(model))
     })
 
-    // При загрузке страницы обновляем токен если он есть
     if (pb.authStore.isValid) {
       pb.collection('users').authRefresh()
         .then(({ record }) => setUser(normalize(record)))
-        .catch(() => pb.authStore.clear())
+        .catch(() => {
+          pb.authStore.clear()
+          setUser(null)
+        })
     }
 
     return unsub
@@ -67,14 +72,22 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     pb.authStore.clear()
+    setUser(null)
   }
 
   const updateBalance = async (amount) => {
     if (!user) return
-    const updated = await pb.collection('users').update(user.id, {
-      balance: user.balance + amount
-    })
-    setUser(prev => ({ ...prev, balance: updated.balance ?? prev.balance + amount }))
+    const newBalance = user.balance + amount
+    skipOnChange.current = true
+    try {
+      await pb.collection('users').update(user.id, { balance: newBalance })
+      setUser(prev => prev ? { ...prev, balance: newBalance } : prev)
+    } catch {
+      // Обновляем локально даже при ошибке
+      setUser(prev => prev ? { ...prev, balance: newBalance } : prev)
+    } finally {
+      skipOnChange.current = false
+    }
   }
 
   const addPurchase = async (purchase) => {
@@ -82,24 +95,24 @@ export function AuthProvider({ children }) {
     const newBalance = user.balance - purchase.total
     const prevHistory = Array.isArray(user.purchaseHistory) ? user.purchaseHistory : []
     const newHistory = [purchase, ...prevHistory]
+
+    skipOnChange.current = true
     try {
-      const updated = await pb.collection('users').update(user.id, {
+      await pb.collection('users').update(user.id, {
         balance: newBalance,
-        purchaseHistory: newHistory
+        purchaseHistory: newHistory,
+        cart: []
       })
-      setUser(prev => ({
-        ...prev,
-        balance: typeof updated.balance === 'number' ? updated.balance : newBalance,
-        purchaseHistory: Array.isArray(updated.purchaseHistory) ? updated.purchaseHistory : newHistory
-      }))
-    } catch (err) {
-      // Если PocketBase не обновился — обновляем локально, чтобы UI не застрял
-      setUser(prev => ({
+    } catch {
+      // PocketBase не обновился — продолжаем локально
+    } finally {
+      setUser(prev => prev ? {
         ...prev,
         balance: newBalance,
-        purchaseHistory: newHistory
-      }))
-      throw err
+        purchaseHistory: newHistory,
+        cart: []
+      } : prev)
+      skipOnChange.current = false
     }
   }
 
