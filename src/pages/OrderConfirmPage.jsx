@@ -45,7 +45,8 @@ export default function OrderConfirmPage() {
   if (!token) return <Navigate to="/" replace />
 
   // Also try to find order from purchase history if localStorage was cleared
-  const purchaseFromHistory = !order ? user.purchaseHistory.find(p => p.token === token) : null
+  const history = Array.isArray(user.purchaseHistory) ? user.purchaseHistory : []
+  const purchaseFromHistory = !order ? history.find(p => p.token === token) : null
   const orderData = order || purchaseFromHistory
 
   return (

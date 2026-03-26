@@ -80,7 +80,8 @@ export function AuthProvider({ children }) {
   const addPurchase = async (purchase) => {
     if (!user) return
     const newBalance = user.balance - purchase.total
-    const newHistory = [purchase, ...user.purchaseHistory]
+    const prevHistory = Array.isArray(user.purchaseHistory) ? user.purchaseHistory : []
+    const newHistory = [purchase, ...prevHistory]
     try {
       const updated = await pb.collection('users').update(user.id, {
         balance: newBalance,

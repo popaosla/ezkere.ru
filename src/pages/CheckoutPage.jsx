@@ -117,8 +117,7 @@ export default function CheckoutPage() {
           ))}
         </div>
         <p style={styles.note}>
-          В демо-версии оплата списывается с баланса аккаунта. Для подключения реальных платежей
-          (ЮKassa, Robokassa, CloudPayments, СБП) необходим backend-сервер. Подробнее в PAYMENT_INTEGRATION.md.
+          В данной версии сайта оплата списывается с баланса аккаунта.
         </p>
       </div>
 

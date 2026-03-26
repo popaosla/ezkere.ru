@@ -11,6 +11,8 @@ export default function ProfileInfo() {
 
   if (!user) return null
 
+  const history = Array.isArray(history) ? history : []
+
   const handleTopUp = () => {
     const amount = parseInt(topUpAmount)
     if (amount > 0) {
@@ -36,7 +38,7 @@ export default function ProfileInfo() {
             <div className={s.statLabel}>Баланс</div>
           </div>
           <div className={s.stat}>
-            <div className={s.statValue}>{user.purchaseHistory.length}</div>
+            <div className={s.statValue}>{history.length}</div>
             <div className={s.statLabel}>Покупок</div>
           </div>
           <div className={s.stat}>
@@ -61,13 +63,13 @@ export default function ProfileInfo() {
 
       <div className={s.historySection}>
         <h2 className={s.sectionTitle}>История покупок</h2>
-        {user.purchaseHistory.length === 0 ? (
+        {history.length === 0 ? (
           <div className={s.emptyHistory}>
             <p>У вас пока нет покупок</p>
           </div>
         ) : (
           <div className={s.historyList}>
-            {user.purchaseHistory.map((purchase, idx) => (
+            {history.map((purchase, idx) => (
               <div
                 key={idx}
                 className={s.historyItem}
