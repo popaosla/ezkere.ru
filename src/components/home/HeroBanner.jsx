@@ -6,6 +6,7 @@ import s from './HeroBanner.module.css'
 export default function HeroBanner() {
   const { games } = useGames()
   const featured = games.find(g => g.isFeatured) || games[0]
+  if (!featured) return null
   const price = calcDiscount(featured.price, featured.discountPercent)
 
   return (

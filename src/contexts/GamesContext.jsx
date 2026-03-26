@@ -1,9 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import pb from '../lib/pb'
-// Фоллбэк — статические данные на случай если PocketBase недоступен
-import { games as staticGames, genres as staticGenres, platforms as staticPlatforms } from '../data/games'
 
 const GamesContext = createContext()
+
+const GENRES = ['Экшен', 'Шутер', 'Симулятор', 'Гонки', 'RPG', 'Казуальная', 'SoulsLike', 'Инди', 'Киберпанк', 'Слешер', 'Хоррор', 'Выживание', 'Файтинг', 'Стратегия', 'Платформер', 'Спорт']
+const PLATFORMS = [
+  { id: 'pc', name: 'PC' },
+  { id: 'ps', name: 'PlayStation' },
+  { id: 'xbox', name: 'Xbox' }
+]
 
 function normalizeGame(record) {
   return {
@@ -32,11 +37,8 @@ function normalizeGame(record) {
 }
 
 export function GamesProvider({ children }) {
-  const [games, setGames] = useState(staticGames)
-  const [genres] = useState(staticGenres)
-  const [platforms] = useState(staticPlatforms)
+  const [games, setGames] = useState([])
   const [loading, setLoading] = useState(true)
-  const [fromDb, setFromDb] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -44,14 +46,10 @@ export function GamesProvider({ children }) {
     pb.collection('games').getFullList({ sort: 'title' })
       .then(records => {
         if (cancelled) return
-        if (records.length > 0) {
-          setGames(records.map(normalizeGame))
-          setFromDb(true)
-        }
-        // Если в базе пусто — оставляем статические данные
+        setGames(records.map(normalizeGame))
       })
-      .catch(() => {
-        // PocketBase недоступен — используем статические данные
+      .catch(err => {
+        console.error('Не удалось загрузить игры из PocketBase:', err.message)
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -61,7 +59,7 @@ export function GamesProvider({ children }) {
   }, [])
 
   return (
-    <GamesContext.Provider value={{ games, genres, platforms, loading, fromDb }}>
+    <GamesContext.Provider value={{ games, genres: GENRES, platforms: PLATFORMS, loading }}>
       {children}
     </GamesContext.Provider>
   )
