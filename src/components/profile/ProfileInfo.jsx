@@ -11,7 +11,7 @@ export default function ProfileInfo() {
 
   if (!user) return null
 
-  const history = Array.isArray(history) ? history : []
+  const history = Array.isArray(user.purchaseHistory) ? user.purchaseHistory : []
 
   const handleTopUp = () => {
     const amount = parseInt(topUpAmount)
