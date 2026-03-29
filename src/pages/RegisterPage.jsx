@@ -64,11 +64,11 @@ export default function RegisterPage() {
           </div>
           <div>
             <label style={styles.label}>Пароль</label>
-            <input style={styles.input} type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="Минимум 6 символов" />
+            <input style={styles.input} type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="Минимум 6 символов" maxLength={20} />
           </div>
           <div>
             <label style={styles.label}>Подтвердите пароль</label>
-            <input style={styles.input} type="password" required value={confirmPass} onChange={e => setConfirmPass(e.target.value)} placeholder="Повторите пароль" />
+            <input style={styles.input} type="password" required value={confirmPass} onChange={e => setConfirmPass(e.target.value)} placeholder="Повторите пароль" maxLength={20} />
           </div>
           {error && <p style={styles.error}>{error}</p>}
           <button style={styles.btn} type="submit">Зарегистрироваться</button>
