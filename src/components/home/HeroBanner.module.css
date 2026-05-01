@@ -76,6 +76,7 @@
   font-size: var(--font-size-base);
   font-weight: 600;
   transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
 .heroBtnPrimary {
@@ -100,11 +101,15 @@
 
 @media (max-width: 767px) {
   .hero {
-    height: 300px;
+    height: 320px;
     border-radius: var(--radius-md);
+  }
+  .heroOverlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
   }
   .heroContent {
     padding: var(--space-lg);
+    max-width: 100%;
   }
   .heroTitle {
     font-size: var(--font-size-2xl);
@@ -112,6 +117,31 @@
   .heroDesc {
     font-size: var(--font-size-sm);
     -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero {
+    height: 300px;
+  }
+  .heroContent {
+    padding: var(--space-md);
+  }
+  .heroTitle {
+    font-size: var(--font-size-xl);
+  }
+  .heroDesc {
+    font-size: var(--font-size-xs);
+    -webkit-line-clamp: 2;
+    margin-bottom: var(--space-md);
+  }
+  .heroActions {
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+  .heroBtn {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
   }
 }
 
